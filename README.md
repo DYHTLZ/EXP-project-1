@@ -2,7 +2,7 @@
 
 What does fairness actually cost in risk pricing? This project builds a risk-pricing pipeline (frequency and severity GLMs), a fairness audit layer, constrained pricing variants, and an accuracy-fairness trade-off frontier, then explains who pays the price of equality.
 
-**Status:** scaffold only — in progress.
+**Status:** Week 1 — data generator and exploratory analysis done.
 
 ## Repository structure
 
@@ -15,4 +15,17 @@ What does fairness actually cost in risk pricing? This project builds a risk-pri
 
 ## How to run
 
-Work in progress. See `docs/` once the methodology memo lands.
+Requires Python 3.10+.
+
+1. Create a virtual environment:
+   `python -m venv .venv`
+2. Activate it:
+   - Windows: `.venv\Scripts\activate`
+   - macOS/Linux: `source .venv/bin/activate`
+3. Install dependencies: `pip install -r requirements.txt`
+4. Regenerate the full dataset (100K policies):
+   `python data/generate_data.py --n-policies 100000 --output data/claims_full.csv`
+
+   A 10K-row sample ships as `data/sample_claims.csv`, so you can skip this
+   step to stay light.
+5. Explore the data: `jupyter notebook notebooks/01_eda.ipynb`

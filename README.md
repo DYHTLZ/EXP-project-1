@@ -2,7 +2,7 @@
 
 What does fairness actually cost in risk pricing? This project builds a risk-pricing pipeline (frequency and severity GLMs), a fairness audit layer, constrained pricing variants, and an accuracy-fairness trade-off frontier, then explains who pays the price of equality.
 
-**Status:** Week 1 — data generator and exploratory analysis done.
+**Status:** Weeks 2–4 — pricing baseline (frequency/severity GLMs) done.
 
 ## Repository structure
 
@@ -29,3 +29,5 @@ Requires Python 3.10+.
    A 10K-row sample ships as `data/sample_claims.csv`, so you can skip this
    step to stay light.
 5. Explore the data: `jupyter notebook notebooks/01_eda.ipynb`
+6. Walk through the pricing baseline: `jupyter notebook notebooks/02_baseline.ipynb`
+7. Run the tests: `pytest`

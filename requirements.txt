@@ -8,4 +8,6 @@ streamlit
 plotly
 matplotlib
 jupyterlab
+nbconvert
+ipykernel
 pytest

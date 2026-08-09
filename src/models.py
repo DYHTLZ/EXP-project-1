@@ -19,7 +19,7 @@ import statsmodels.api as sm
 import statsmodels.formula.api as smf
 
 FREQUENCY_FORMULA = (
-    "claim_count ~ age + C(gender) + C(territory) "
+    "claim_count ~ bs(age, df=4) + C(gender) + C(territory) "
     "+ annual_miles + driving_experience_years"
 )
 SEVERITY_FORMULA = (

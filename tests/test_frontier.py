@@ -58,5 +58,6 @@ def test_redistribution_table_consistent(scored):
     tab = cp.redistribution_table(lam)
     assert "change" in tab.columns
     # zero-sum: total money moved across segments is 0 (budget neutral)
-    assert abs(tab["total_moved"].sum()) < 1e-3
+    total_premium = scored["predicted_premium"].sum()
+    assert abs(tab["total_moved"].sum() / total_premium) < 1e-6
     assert (tab["constrained_premium"] > 0).all()

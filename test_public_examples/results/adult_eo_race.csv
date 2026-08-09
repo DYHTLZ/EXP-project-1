@@ -1,0 +1,6 @@
+race,n,tpr,fpr,predicted_positive_rate
+Amer-Indian-Eskimo,311.0,0.25,0.0109,0.0386
+Asian-Pac-Islander,1039.0,0.6123,0.1206,0.2512
+Black,3124.0,0.3618,0.023,0.065
+Other,271.0,0.28,0.0163,0.0406
+White,27816.0,0.5598,0.0831,0.2051

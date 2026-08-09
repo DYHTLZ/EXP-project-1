@@ -1,0 +1,5 @@
+# Keep the committed samples despite the root .gitignore (data/*.csv)
+!data/*.csv
+
+# Raw downloads stay out of git
+data/raw/

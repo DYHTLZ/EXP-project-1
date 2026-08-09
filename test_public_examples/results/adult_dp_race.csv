@@ -1,0 +1,6 @@
+race,n_policies,mean_score,ratio_vs_overall,diff_vs_overall
+Amer-Indian-Eskimo,311,0.1158,0.4807,-0.1251
+Asian-Pac-Islander,1039,0.2656,1.1031,0.0248
+Black,3124,0.1239,0.5144,-0.1169
+Other,271,0.0923,0.3831,-0.1486
+White,27816,0.2559,1.0625,0.0151

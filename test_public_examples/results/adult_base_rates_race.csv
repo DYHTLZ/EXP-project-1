@@ -1,0 +1,6 @@
+race,n_policies,positive_rate
+Amer-Indian-Eskimo,311,0.1158
+Asian-Pac-Islander,1039,0.2656
+Black,3124,0.1239
+Other,271,0.0923
+White,27816,0.2559

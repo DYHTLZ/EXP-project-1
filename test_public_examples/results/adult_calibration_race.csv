@@ -1,0 +1,6 @@
+race,n_policies,actual_mean,predicted_mean,predicted/actual
+Amer-Indian-Eskimo,311,0.1158,0.1158,1.0
+Asian-Pac-Islander,1039,0.2656,0.2656,1.0
+Black,3124,0.1239,0.1239,1.0
+Other,271,0.0923,0.0923,1.0
+White,27816,0.2559,0.2559,1.0

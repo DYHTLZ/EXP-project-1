@@ -1,0 +1,3 @@
+sex,n,tpr,fpr,predicted_positive_rate
+Female,10771.0,0.3121,0.0155,0.048
+Male,21790.0,0.5916,0.1146,0.2604

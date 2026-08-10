@@ -184,6 +184,12 @@ class ConstrainedPricing:
         group_means = np.array(
             [pred[self.parity == g].mean() for g in range(self.n_parity)]
         )
+        group_loss_ratio = np.array(
+            [
+                self.loss[self.parity == g].sum() / pred[self.parity == g].sum()
+                for g in range(self.n_parity)
+            ]
+        )
         gap = float((group_means.max() - group_means.min()) / self.overall_mean)
         redistribution = float(
             np.abs(pred - self.premium).sum() / self.premium.sum()
@@ -192,6 +198,8 @@ class ConstrainedPricing:
             "cost_mse": mse / mse_base - 1.0,
             "fairness_gap": gap,
             "redistribution": redistribution,
+            "loss_ratio": float(self.loss.sum() / pred.sum()),
+            "loss_ratio_gap": float(group_loss_ratio.max() - group_loss_ratio.min()),
             "group_mean_premium": group_means,
             "segment_multipliers": lam,
         }
@@ -217,6 +225,8 @@ class ConstrainedPricing:
                 "cost_mse": metrics["cost_mse"],
                 "fairness_gap": metrics["fairness_gap"],
                 "redistribution": metrics["redistribution"],
+                "loss_ratio": metrics["loss_ratio"],
+                "loss_ratio_gap": metrics["loss_ratio_gap"],
             }
             for i in range(self.n_segments):
                 row[f"multiplier_{i}"] = float(lam[i])

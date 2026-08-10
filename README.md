@@ -83,6 +83,11 @@ Requires Python 3.10+.
   costs +0.14% MSE and moves 12% of premium volume.
 * **Parity breaks calibration on purpose.** At full parity, premium/actual
   ratios swing from 0.54 (M/C, undercharged) to 1.85 (F/A, overcharged).
+* **Parity distorts loss ratios.** The per-segment loss-ratio gap widens
+  from 0.13 to 1.30 at full parity (aggregate stays 1.00 by budget
+  neutrality) — the cross-subsidy in actuarial terms.
+* **Results are robust at 100K policies.** The full dataset reproduces the
+  same frontier shape (calibration 0.98–1.02, full parity +1.8% MSE).
 
 ## Results
 
@@ -91,6 +96,8 @@ Requires Python 3.10+.
 ![Redistribution at full parity](results/redistribution_full_parity.png)
 
 ![Calibration vs parity](results/calibration_tradeoff.png)
+
+![Effect sizes](results/effect_sizes.png)
 
 All tables and charts are in `results/`; full derivations are in
 [`docs/methodology.md`](docs/methodology.md).

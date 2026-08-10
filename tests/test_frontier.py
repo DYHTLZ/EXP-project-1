@@ -61,3 +61,13 @@ def test_redistribution_table_consistent(scored):
     total_premium = scored["predicted_premium"].sum()
     assert abs(tab["total_moved"].sum() / total_premium) < 1e-6
     assert (tab["constrained_premium"] > 0).all()
+
+
+def test_loss_ratio_metrics(scored):
+    """Aggregate loss ratio stays ~1 (budget neutral); gap widens with parity."""
+    cp = ConstrainedPricing(scored)
+    loose = cp.metrics(cp.solve(eps=cp._baseline_gap()))
+    tight = cp.metrics(cp.solve(eps=0.0))
+    assert 0.98 < loose["loss_ratio"] < 1.02
+    assert 0.98 < tight["loss_ratio"] < 1.02
+    assert tight["loss_ratio_gap"] > loose["loss_ratio_gap"]

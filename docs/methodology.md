@@ -103,6 +103,15 @@ pure premium_i = predicted frequency_i × predicted severity per claim_i
   $1,004K → loss ratio 1.04.
 * **Poisson dispersion:** Pearson dispersion 1.02 (target 1.0).
 
+### 3.4 Interpretability (effect sizes)
+
+GLMs are transparent by design: each `exp(coef)` is the multiplicative
+effect of a feature on claim rate or severity, with 95% confidence
+intervals. The chart below (also saved as `results/effect_sizes.png`) is
+the explainability artifact a pricing committee or regulator asks for.
+
+![Effect sizes](../results/effect_sizes.png)
+
 ## 4. Fairness audit
 
 Definitions (all computed by [`src/fairness.py`](../src/fairness.py)):
@@ -147,6 +156,11 @@ where `μ` is the overall mean premium and `ε` the allowed parity gap.
 Solved exactly with OSQP ([`src/frontier.py`](../src/frontier.py)); sweeping
 `ε` from the baseline gap to 0 traces the frontier.
 
+We also report two actuarial metrics: the **aggregate loss ratio**
+(Σ y / Σ p′) — held at ~1.00 by budget neutrality — and the **per-segment
+loss-ratio gap** (max − min of Σ y / Σ p′ across parity groups), which
+measures how much parity distorts cross-subsidies in insurance terms.
+
 ### 5.2 Results — full segment parity
 
 At `ε = 0` every segment pays the same mean premium ($486.50):
@@ -161,12 +175,15 @@ At `ε = 0` every segment pays the same mean premium ($486.50):
 | M/C | $918.68 | $486.50 | −47.1% |
 
 **Cost: +2.14% MSE; 35.3% of premium volume changes hands.**
+Loss-ratio gap widens from **0.13** (baseline) to **1.30** (full parity);
+the aggregate loss ratio stays 1.00 by construction.
 
 ### 5.3 Results — gender parity only (EU-style ban)
 
 Constraining only the two gender means:
 
 **Cost: +0.14% MSE; 11.9% of premium volume changes hands.**
+Loss-ratio gap widens from **0.02** to **0.25**.
 
 Territory still prices risk; banning the single variable costs an order of
 magnitude less than flattening all segments.
@@ -187,6 +204,24 @@ full parity:
 
 This is the pricing version of Chouldechova's result: when base rates
 differ, parity and calibration cannot both hold.
+
+### 5.5 Robustness — full 100K dataset
+
+All numbers above use the committed 10K sample. Re-running the identical
+pipeline on the full 100K dataset (reproducible via the generator, seed 42):
+
+| Metric (100K) | Value |
+|---|---:|
+| Segment calibration range | 0.98–1.02 |
+| Holdout loss ratio | 0.98 |
+| Full segment parity cost | +1.8% MSE |
+| Premium volume moved at full parity | 34.8% |
+| Loss-ratio gap at full parity | 1.36 |
+| Gender parity cost | +0.25% MSE |
+| Gender parity volume moved | 17.1% |
+
+The frontier has the same shape at 100K; small differences from the 10K
+sample are sampling noise, not model instability.
 
 ## 6. The impossibility result
 

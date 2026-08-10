@@ -107,6 +107,13 @@ All tables and charts are in `results/`; full derivations are in
 The same pipeline runs on [UCI Adult and freMTPL2](test_public_examples/README.md),
 marked as experiments.
 
+## Versions & rollback
+
+Every update is tagged (`v1.0.0` ... `v1.6.2`) and released on GitHub, so any
+previous version can be restored if something goes wrong. See
+[docs/versioning.md](docs/versioning.md) for the version history and
+restore instructions.
+
 ## License
 
 MIT — see [LICENSE](LICENSE).

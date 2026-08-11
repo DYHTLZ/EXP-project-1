@@ -59,6 +59,7 @@ Requires Python 3.10+.
    - `notebooks/02_baseline.ipynb`
    - `notebooks/03_fairness.ipynb`
    - `notebooks/04_constrained.ipynb`
+   - `notebooks/05_individual_fairness.ipynb`
 5. Explore interactively: `streamlit run dashboard/app.py`
 6. Run the tests: `pytest`
 
@@ -86,6 +87,9 @@ Requires Python 3.10+.
 * **Parity distorts loss ratios.** The per-segment loss-ratio gap widens
   from 0.13 to 1.30 at full parity (aggregate stays 1.00 by budget
   neutrality) — the cross-subsidy in actuarial terms.
+* **Individual fairness is a different lens.** Within the same predicted
+  risk decile, F and M still pay different premiums — group parity does not
+  imply same-risk/same-price.
 * **Results are robust at 100K policies.** The full dataset reproduces the
   same frontier shape (calibration 0.98–1.02, full parity +1.8% MSE).
 
@@ -98,6 +102,8 @@ Requires Python 3.10+.
 ![Calibration vs parity](results/calibration_tradeoff.png)
 
 ![Effect sizes](results/effect_sizes.png)
+
+![Individual fairness](results/individual_fairness.png)
 
 All tables and charts are in `results/`; full derivations are in
 [`docs/methodology.md`](docs/methodology.md).

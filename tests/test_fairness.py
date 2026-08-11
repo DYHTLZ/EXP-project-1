@@ -8,6 +8,7 @@ from src.fairness import (
     calibration_by_group,
     demographic_parity,
     equalized_odds,
+    individual_fairness,
     premium_shift,
 )
 from src.load import load_claims
@@ -54,3 +55,16 @@ def test_equalized_odds_conflict_is_visible():
     scored = add_predictions(df, freq, sev)
     eo = equalized_odds(scored, "predicted_frequency", "has_claim", ("gender",))
     assert not np.isclose(eo.loc["F", "tpr"], eo.loc["M", "tpr"], atol=0.02)
+
+
+def test_individual_fairness_spread_exists():
+    """Within the same risk bin, protected groups still pay differently."""
+    df = load_claims()
+    freq = fit_frequency_model(df)
+    sev = fit_severity_model(df)
+    scored = add_predictions(df, freq, sev)
+    table = individual_fairness(scored, "predicted_frequency", "predicted_premium")
+    assert {"risk_bin", "min_premium", "max_premium", "max_min_ratio"}.issubset(
+        table.columns
+    )
+    assert (table["max_min_ratio"] > 1.0).all()

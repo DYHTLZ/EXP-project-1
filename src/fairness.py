@@ -157,3 +157,36 @@ def threshold_for_tpr(
     tab = pd.DataFrame(rows).T
     tab.index.names = list(group_cols)
     return tab.round(4)
+
+
+def individual_fairness(
+    df: pd.DataFrame,
+    score_col: str,
+    premium_col: str,
+    group_cols: tuple[str, ...] = ("gender",),
+    n_bins: int = 10,
+) -> pd.DataFrame:
+    """Within-risk-bin premium spread across protected groups.
+
+    Bins policies by predicted risk (``score_col``) and compares mean
+    premiums across groups inside each bin. If premiums differ within the
+    same risk bin, non-risk factors (e.g., protected attributes) are
+    pricing — the individual-fairness lens: *similar risk, similar price*.
+    """
+    out = df.copy()
+    out["risk_bin"] = pd.qcut(df[score_col], q=n_bins, duplicates="drop")
+    tab = (
+        out.groupby(["risk_bin", *group_cols], observed=True)[premium_col]
+        .mean()
+        .unstack()
+    )
+    spread = tab.max(axis=1) / tab.min(axis=1)
+    result = pd.DataFrame(
+        {
+            "risk_bin": tab.index.astype(str),
+            "min_premium": tab.min(axis=1),
+            "max_premium": tab.max(axis=1),
+            "max_min_ratio": spread,
+        }
+    )
+    return result.round(2)

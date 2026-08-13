@@ -1,0 +1,5 @@
+model,holdout_loss_ratio,calibration_range,gender_dp_deviation,premium_spread
+baseline,1.0502,0.2849,0.0954,3.308
+no_gender,1.0506,0.5095,0.0226,2.76
+no_territory,1.052,0.4794,0.1038,2.264
+no_gender_no_territory,1.0537,0.6863,0.0141,1.89

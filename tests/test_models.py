@@ -6,6 +6,7 @@ import pytest
 
 from src.load import load_claims
 from src.models import (
+    FREQUENCY_FORMULA_NO_GENDER,
     fit_frequency_model,
     fit_severity_model,
     predict_frequency,
@@ -52,3 +53,22 @@ def test_frequency_model_calibrated_by_age_band(data):
     )
     ratio = cal["predicted"] / cal["actual"]
     assert ratio.between(0.90, 1.10).all(), ratio
+
+
+def test_no_gender_model_improves_demographic_parity(data):
+    from src.fairness import demographic_parity
+
+    sev = fit_severity_model(data)
+    full = fit_frequency_model(data)
+    no_gender = fit_frequency_model(data, formula=FREQUENCY_FORMULA_NO_GENDER)
+
+    scored_full = data.copy()
+    scored_full["predicted_premium"] = predict_pure_premium(full, sev, scored_full)
+    scored_nog = data.copy()
+    scored_nog["predicted_premium"] = predict_pure_premium(no_gender, sev, scored_nog)
+
+    dp_full = demographic_parity(scored_full, "predicted_premium", ("gender",))
+    dp_nog = demographic_parity(scored_nog, "predicted_premium", ("gender",))
+    dev_full = abs(dp_full.loc["F", "ratio_vs_overall"] - 1.0)
+    dev_nog = abs(dp_nog.loc["F", "ratio_vs_overall"] - 1.0)
+    assert dev_nog < dev_full

@@ -17,6 +17,8 @@ breaks something, any previous version can be restored.
 | v1.6.0 | Enhancement: age splines fix, model card, regulatory mapping, CI, employer-focused README |
 | v1.6.1 | CI fix: pytest pythonpath |
 | v1.6.2 | Versioning & rollback documentation |
+| v1.8.0 | Individual fairness analysis (same-risk premium spread) |
+| v1.9.0 | Regulatory "remove variable X" model comparison |
 
 ## How to check versions
 

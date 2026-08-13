@@ -60,6 +60,7 @@ Requires Python 3.10+.
    - `notebooks/03_fairness.ipynb`
    - `notebooks/04_constrained.ipynb`
    - `notebooks/05_individual_fairness.ipynb`
+   - `notebooks/06_remove_variable.ipynb`
 5. Explore interactively: `streamlit run dashboard/app.py`
 6. Run the tests: `pytest`
 
@@ -90,6 +91,9 @@ Requires Python 3.10+.
 * **Individual fairness is a different lens.** Within the same predicted
   risk decile, F and M still pay different premiums — group parity does not
   imply same-risk/same-price.
+* **"Remove variable X" is nearly free for gender.** Retraining without
+  gender keeps accuracy (loss ratio 1.0506 vs 1.0502) and cuts the gender
+  parity gap 4×; removing territory is the expensive policy.
 * **Results are robust at 100K policies.** The full dataset reproduces the
   same frontier shape (calibration 0.98–1.02, full parity +1.8% MSE).
 
@@ -104,6 +108,8 @@ Requires Python 3.10+.
 ![Effect sizes](results/effect_sizes.png)
 
 ![Individual fairness](results/individual_fairness.png)
+
+![Remove variable X](results/model_removal.png)
 
 All tables and charts are in `results/`; full derivations are in
 [`docs/methodology.md`](docs/methodology.md).

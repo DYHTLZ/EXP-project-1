@@ -22,18 +22,31 @@ FREQUENCY_FORMULA = (
     "claim_count ~ bs(age, df=4) + C(gender) + C(territory) "
     "+ annual_miles + driving_experience_years"
 )
+FREQUENCY_FORMULA_NO_GENDER = (
+    "claim_count ~ bs(age, df=4) + C(territory) "
+    "+ annual_miles + driving_experience_years"
+)
+FREQUENCY_FORMULA_NO_TERRITORY = (
+    "claim_count ~ bs(age, df=4) + C(gender) "
+    "+ annual_miles + driving_experience_years"
+)
 SEVERITY_FORMULA = (
     "severity_per_claim ~ age + C(territory) + C(vehicle_type)"
+)
+SEVERITY_FORMULA_NO_TERRITORY = (
+    "severity_per_claim ~ age + C(vehicle_type)"
 )
 
 
 def fit_frequency_model(
-    df: pd.DataFrame, exposure_col: str = "exposure"
+    df: pd.DataFrame,
+    exposure_col: str = "exposure",
+    formula: str = FREQUENCY_FORMULA,
 ):
     """Fit a Poisson GLM for claim counts with a log-exposure offset."""
     offset = np.log(df[exposure_col].clip(lower=1e-12))
     model = smf.glm(
-        FREQUENCY_FORMULA,
+        formula,
         data=df,
         family=sm.families.Poisson(),
         offset=offset,
@@ -47,7 +60,7 @@ def predict_frequency(model, df: pd.DataFrame, exposure_col: str = "exposure") -
     return model.predict(df, offset=offset)
 
 
-def fit_severity_model(df: pd.DataFrame):
+def fit_severity_model(df: pd.DataFrame, formula: str = SEVERITY_FORMULA):
     """Fit a Gamma GLM (log link) for severity per claim.
 
     The response is total loss divided by claim count, which keeps the
@@ -58,7 +71,7 @@ def fit_severity_model(df: pd.DataFrame):
         claimers["total_claim_amount"] / claimers["claim_count"]
     )
     model = smf.glm(
-        SEVERITY_FORMULA,
+        formula,
         data=claimers,
         family=sm.families.Gamma(link=sm.families.links.Log()),
     )
